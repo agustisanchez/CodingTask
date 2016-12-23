@@ -59,4 +59,9 @@ Transfer-Encoding: chunked
 ```
 ## Java 8 features
 
+Collection stream and the `map` operation is used to convert a list of transaction entities into transaction DTOs:
+```java
+		List<TransactionResponseDTO> statement = accountTransactionDAO.findTop10ByAccountOrderByCreateDateDesc(account)
+				.map(i -> new TransactionResponseDTO(i)).collect(Collectors.toList());
+ ```
 ## XML config
