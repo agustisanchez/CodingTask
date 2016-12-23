@@ -20,21 +20,24 @@ public class AccountService {
 	private AccountDAO accountDAO;
 
 	@Autowired
-	private AccountTransactionDAO placementDAO;
+	private AccountTransactionDAO accountTransactionDAO;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public AccountDTO findById(Long id) {
+	public AccountDTO findAccountById(Long id) throws AccountNotFoundException {
 		Account account = accountDAO.findOne(id);
 
-		List<TransactionResponseDTO> statement = placementDAO.findTop10ByAccountOrderByCreateDateDesc(account)
+		if (account == null) {
+			throw new AccountNotFoundException();
+		}
+
+		List<TransactionResponseDTO> statement = accountTransactionDAO.findTop10ByAccountOrderByCreateDateDesc(account)
 				.map(i -> new TransactionResponseDTO(i)).collect(Collectors.toList());
 
-		return (account == null ? null : new AccountDTO(account, statement)); // Use
-		// optional?
+		return new AccountDTO(account, statement);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public Long create() {
+	public Long createAccount() {
 		Account account = accountDAO.save(new Account());
 		return account.getId();
 	}
@@ -70,7 +73,7 @@ public class AccountService {
 			throw new NotEnoughFundsException();
 		}
 
-		AccountTransaction newPlacement = placementDAO.save(new AccountTransaction(account, type, amount));
+		AccountTransaction newPlacement = accountTransactionDAO.save(new AccountTransaction(account, type, amount));
 		accountDAO.save(account);
 		return newPlacement.getId();
 	}

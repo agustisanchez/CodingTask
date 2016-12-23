@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,14 +28,10 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 
+	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public ResponseEntity<AccountDTO> getAccount(@PathVariable("id") Long id) {
-		AccountDTO accountDTO = accountService.findById(id);
-		if (accountDTO == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(accountDTO, HttpStatus.OK);
-		}
+	public AccountDTO getAccount(@PathVariable("id") Long id) throws AccountNotFoundException {
+		return accountService.findAccountById(id);
 	}
 
 	@RequestMapping(value = "{id}/deposit", method = RequestMethod.POST)
@@ -55,7 +52,7 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create() {
-		Long id = accountService.create();
+		Long id = accountService.createAccount();
 		return toLocation(id);
 	}
 
