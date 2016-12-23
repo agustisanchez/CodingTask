@@ -20,7 +20,7 @@ public class AccountService {
 	private AccountDAO accountDAO;
 
 	@Autowired
-	private PlacementDAO placementDAO;
+	private AccountTransactionDAO placementDAO;
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public AccountDTO findById(Long id) {
