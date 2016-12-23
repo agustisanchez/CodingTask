@@ -12,9 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.prestamosprima.codingtask.domain.Account;
 import com.prestamosprima.codingtask.domain.AccountTransaction;
 import com.prestamosprima.codingtask.domain.TransactionType;
-import com.prestamosprima.codingtask.dto.AccountDTO;
-import com.prestamosprima.codingtask.dto.TransactionRequestDTO;
-import com.prestamosprima.codingtask.dto.TransactionResponseDTO;
 
 @Service
 public class AccountService {

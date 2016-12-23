@@ -1,4 +1,4 @@
-package com.prestamosprima.codingtask.dto;
+package com.prestamosprima.codingtask.service;
 
 import java.math.BigDecimal;
 

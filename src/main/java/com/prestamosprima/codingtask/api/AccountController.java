@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.prestamosprima.codingtask.domain.TransactionType;
-import com.prestamosprima.codingtask.dto.AccountDTO;
-import com.prestamosprima.codingtask.dto.TransactionRequestDTO;
+import com.prestamosprima.codingtask.service.AccountDTO;
 import com.prestamosprima.codingtask.service.AccountService;
+import com.prestamosprima.codingtask.service.TransactionRequestDTO;
 
 @RestController
 @RequestMapping(value = "/account", produces = "application/json")
