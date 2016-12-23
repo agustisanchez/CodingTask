@@ -45,6 +45,18 @@ Transfer-Encoding: chunked
 ```
 ## Exception handling
 
+Class `GlobalExceptionHandler` centralizes the mapping of business and system exceptions into error codes and HTTP status codes.
+
+REST controllers take care of the success scenario.
+
+**Sample error response**
+```bash
+HTTP/1.1 400
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+
+{"errorCode":"amount.must.be.positive"}
+```
 ## Java 8 features
 
 ## XML config
