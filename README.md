@@ -59,9 +59,14 @@ Transfer-Encoding: chunked
 ```
 ## Java 8 features
 
-Collection stream and the `map` operation is used to convert a list of transaction entities into transaction DTOs:
+Collection stream , the `map` operation and a lambda expression are used to convert a list of `AccountTransaction` objects into a list of `TransactionDTO` objects:
 ```java
 		List<TransactionResponseDTO> statement = accountTransactionDAO.findTop10ByAccountOrderByCreateDateDesc(account)
 				.map(i -> new TransactionResponseDTO(i)).collect(Collectors.toList());
  ```
+ 
+ Other Java 8 features that could be considered: `Optional` and the new Time API.
+ 
 ## XML config
+
+I prefer Spring XML config over Java config as the former is far more compact.
