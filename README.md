@@ -31,8 +31,18 @@ Content-Length: 0
 
 ## Get account balance and latest ten operations
 
+**Request**
+```bash
+curl -w "\n" -v -XGET "http://localhost:8080/account/1"
+```
+**Response**
+```bash
+HTTP/1.1 200
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
 
-
+{"statement":[{"type":"DEPOSIT","amount":40.00,"createDate":1482529457005},{"type":"WITHDRAWAL","amount":40.00,"createDate":1482513247789},{"type":"DEPOSIT","amount":40.00,"createDate":1482513232229},{"type":"DEPOSIT","amount":15.00,"createDate":1482498830576}],"balance":55.00}
+```
 ## Exception handling
 
 ## Java 8 features
