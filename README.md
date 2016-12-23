@@ -70,3 +70,13 @@ Collection stream , the `map` operation and a lambda expression are used to conv
 ## XML config
 
 I prefer Spring XML config over Java config as the former is far more compact.
+
+## Persistence
+
+JPA / Hibernate with H2 database (a `CodingTask` file is written to the user's home directory).
+Database identity columns.
+Creation timestamp and update timestamp audit columns in all entities.
+Spring Data JPA repositories.
+Entity and repository base classes.
+
+
