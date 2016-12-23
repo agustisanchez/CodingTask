@@ -38,23 +38,25 @@ public class AccountController {
 	public ResponseEntity<?> deposit(@PathVariable("id") Long accountId, @RequestBody TransactionRequestDTO requestDTO)
 			throws Exception {
 		requestDTO.setType(TransactionType.DEPOSIT);
-		Long depositId = accountService.createTransaction(accountId, requestDTO);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(depositId).toUri();
-		return ResponseEntity.created(location).build();
+		Long trxId = accountService.createTransaction(accountId, requestDTO);
+		return toLocation(trxId);
 	}
 
 	@RequestMapping(value = "{id}/withdrawal", method = RequestMethod.POST)
 	public ResponseEntity<?> withdraw(@PathVariable("id") Long accountId, @RequestBody TransactionRequestDTO requestDTO)
 			throws Exception {
 		requestDTO.setType(TransactionType.WITHDRAWAL);
-		Long depositId = accountService.createTransaction(accountId, requestDTO);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(depositId).toUri();
-		return ResponseEntity.created(location).build();
+		Long trxId = accountService.createTransaction(accountId, requestDTO);
+		return toLocation(trxId);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create() {
 		Long id = accountService.create();
+		return toLocation(id);
+	}
+
+	private ResponseEntity<?> toLocation(Long id) {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 		return ResponseEntity.created(location).build();
 	}

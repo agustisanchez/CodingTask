@@ -10,6 +10,11 @@ public class TransactionResponseDTO {
 
 	private AccountTransaction transaction;
 
+	public TransactionResponseDTO(AccountTransaction placement) {
+		super();
+		this.transaction = placement;
+	}
+
 	public TransactionType getType() {
 		return transaction.getType();
 	}
@@ -20,11 +25,6 @@ public class TransactionResponseDTO {
 
 	public Date getCreateDate() {
 		return transaction.getCreateDate();
-	}
-
-	public TransactionResponseDTO(AccountTransaction placement) {
-		super();
-		this.transaction = placement;
 	}
 
 }
