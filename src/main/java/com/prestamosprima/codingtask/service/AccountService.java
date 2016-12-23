@@ -40,18 +40,19 @@ public class AccountService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-	public Long createTransaction(Long accountId, TransactionRequestDTO requestDTO) throws Exception {
+	public Long createTransaction(Long accountId, TransactionRequestDTO requestDTO)
+			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
 
 		BigDecimal amount = requestDTO.getAmount();
 		TransactionType type = requestDTO.getType();
 
 		if (amount.doubleValue() < 0.0) {
-			throw new IllegalArgumentException();
+			throw new AmountMustBePositiveException();
 		}
 
 		Account account = accountDAO.findOne(accountId);
 		if (account == null) {
-			throw new Exception(); // TODO review
+			throw new AccountNotFoundException();
 		}
 
 		switch (type) {
@@ -62,11 +63,11 @@ public class AccountService {
 			account.setBalance(account.getBalance().subtract(amount));
 			break;
 		default:
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Unknown transaction type " + type);
 		}
 
 		if (account.getBalance().doubleValue() < 0) {
-			throw new Exception();
+			throw new NotEnoughFundsException();
 		}
 
 		AccountTransaction newPlacement = placementDAO.save(new AccountTransaction(account, type, amount));

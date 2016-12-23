@@ -14,7 +14,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.prestamosprima.codingtask.domain.TransactionType;
 import com.prestamosprima.codingtask.service.AccountDTO;
+import com.prestamosprima.codingtask.service.AccountNotFoundException;
 import com.prestamosprima.codingtask.service.AccountService;
+import com.prestamosprima.codingtask.service.AmountMustBePositiveException;
+import com.prestamosprima.codingtask.service.NotEnoughFundsException;
 import com.prestamosprima.codingtask.service.TransactionRequestDTO;
 
 @RestController
@@ -36,7 +39,7 @@ public class AccountController {
 
 	@RequestMapping(value = "{id}/deposit", method = RequestMethod.POST)
 	public ResponseEntity<?> deposit(@PathVariable("id") Long accountId, @RequestBody TransactionRequestDTO requestDTO)
-			throws Exception {
+			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
 		requestDTO.setType(TransactionType.DEPOSIT);
 		Long trxId = accountService.createTransaction(accountId, requestDTO);
 		return toLocation(trxId);
@@ -44,7 +47,7 @@ public class AccountController {
 
 	@RequestMapping(value = "{id}/withdrawal", method = RequestMethod.POST)
 	public ResponseEntity<?> withdraw(@PathVariable("id") Long accountId, @RequestBody TransactionRequestDTO requestDTO)
-			throws Exception {
+			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
 		requestDTO.setType(TransactionType.WITHDRAWAL);
 		Long trxId = accountService.createTransaction(accountId, requestDTO);
 		return toLocation(trxId);
