@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prestamosprima.codingtask.service.AccountNotFoundException;
@@ -34,7 +33,6 @@ public class GlobalExceptionHandler {
 		excMap.put(Exception.class, new ExceptionMapping("system.error", HttpStatus.INTERNAL_SERVER_ERROR));
 	}
 
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = Exception.class)
 	public ResponseEntity<ExceptionDTO> handleException(Exception e) {
 
