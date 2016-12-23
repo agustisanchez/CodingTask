@@ -14,8 +14,10 @@ public class Account extends BaseEntity {
 	@Column(nullable = false)
 	private BigDecimal balance;
 
+	@Override
 	@PrePersist
 	void prePersist() {
+		super.prePersist();
 		if (balance == null) {
 			balance = new BigDecimal(0.0);
 		}
@@ -28,4 +30,11 @@ public class Account extends BaseEntity {
 	public BigDecimal getBalance() {
 		return balance;
 	}
+
+	@Override
+	public String toString() {
+		return "Account [getId()=" + getId() + ", getCreateDate()=" + getCreateDate() + ", getUpdateDate()="
+				+ getUpdateDate() + ", balance=" + balance + "]";
+	}
+
 }

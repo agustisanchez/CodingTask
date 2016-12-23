@@ -1,7 +1,11 @@
 package com.prestamosprima.codingtask.service;
 
-import com.prestamosprima.codingtask.domain.Placement;
+import java.util.stream.Stream;
 
-public interface PlacementDAO extends BaseDAO<Placement> {
+import com.prestamosprima.codingtask.domain.Account;
+import com.prestamosprima.codingtask.domain.AccountTransaction;
 
+public interface PlacementDAO extends BaseDAO<AccountTransaction> {
+
+	Stream<AccountTransaction> findTop10ByAccountOrderByCreateDateDesc(Account account);
 }
