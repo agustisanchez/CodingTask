@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ import com.prestamosprima.codingtask.domain.TransactionType;
 @Service
 public class AccountService {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	@Autowired
 	private AccountDAO accountDAO;
 
@@ -24,6 +29,11 @@ public class AccountService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public AccountDTO findAccountById(Long id) throws AccountNotFoundException {
+
+		String userName = userName();
+		logger.info("User '{}'", userName);
+		// TODO check account belongs to user
+
 		Account account = accountDAO.findOne(id);
 
 		if (account == null) {
@@ -38,6 +48,11 @@ public class AccountService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Long createAccount() {
+
+		String userName = userName();
+		logger.info("User '{}'", userName);
+		// TODO check account belongs to user
+
 		Account account = accountDAO.save(new Account());
 		return account.getId();
 	}
@@ -45,6 +60,10 @@ public class AccountService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public Long createTransaction(Long accountId, TransactionRequestDTO requestDTO)
 			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
+
+		String userName = userName();
+		logger.info("User '{}'", userName);
+		// TODO check account belongs to user
 
 		BigDecimal amount = requestDTO.getAmount();
 		TransactionType type = requestDTO.getType();
@@ -76,6 +95,10 @@ public class AccountService {
 		AccountTransaction newPlacement = accountTransactionDAO.save(new AccountTransaction(account, type, amount));
 		accountDAO.save(account);
 		return newPlacement.getId();
+	}
+
+	private String userName() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 }

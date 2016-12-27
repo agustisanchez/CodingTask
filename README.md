@@ -8,7 +8,7 @@
 **Request**
 
 ```bash
-curl -v -XPOST "http://localhost:8080/account"
+curl -v -u user:password -XPOST "http://localhost:8080/account"
 ```
 **Response**
 ```bash
@@ -22,6 +22,7 @@ Content-Length: 0
 ```bash
 curl -w "\n" -v -H "content-type: application/json" \
 -d "{\"amount\":40.0, \"type\":\"DEPOSIT\"}" \
+-u user:password \
 -XPOST "http://localhost:8080/account/1/transaction"
 ```
 
@@ -29,6 +30,7 @@ curl -w "\n" -v -H "content-type: application/json" \
 ```bash
 curl -w "\n" -v -H "content-type: application/json" \
 -d "{\"amount\":40.0, \"type\":\"WITHDRAWAL\"}" \
+-u user:password \
 -XPOST "http://localhost:8080/account/1/transaction"
 ```
 **Response**
@@ -42,7 +44,7 @@ Content-Length: 0
 
 **Request**
 ```bash
-curl -w "\n" -v -XGET "http://localhost:8080/account/1"
+curl -w "\n" -v -u user:password -XGET "http://localhost:8080/account/1"
 ```
 **Response**
 ```bash
@@ -66,6 +68,14 @@ Transfer-Encoding: chunked
 
 {"errorCode":"amount.must.be.positive"}
 ```
+## Security
+
+API methods have been secured with simple HTTP AUTH (wich requires SSL transport).
+
+Spring security checks that the Autherization header is present and does the login agains an in-memory dummy user (user/password -- no database lookup implemented so far).
+
+In the service classes, the user ID is retrieved using Spring's `SecurityContextHolder` class.
+
 ## Java 8 features
 
 Collection stream , the `map` operation and a lambda expression are used to convert a list of `AccountTransaction` objects into a list of `TransactionDTO` objects:

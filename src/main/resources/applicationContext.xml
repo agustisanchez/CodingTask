@@ -13,7 +13,7 @@
 http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/security
       http://www.springframework.org/schema/security/spring-security.xsd">
 	<context:property-placeholder location="classpath:applicationContext.properties" />
-	<!-- CAPA PERSISTENCIA -->
+		<!-- CAPA PERSISTENCIA -->
 	<jpa:repositories base-package="com.prestamosprima.codingtask.service" />
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -28,8 +28,7 @@ http://www.springframework.org/schema/security/spring-security.xsd http://www.sp
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="database"
-					value="${codingtask.jpa.vendor.database:H2}" />
+				<property name="database" value="${codingtask.jpa.vendor.database:H2}" />
 				<property name="showSql" value="${codingtask.jpa.vendor.showSql:false}" />
 				<property name="generateDdl" value="true" />
 			</bean>
