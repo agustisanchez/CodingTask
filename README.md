@@ -72,7 +72,7 @@ Transfer-Encoding: chunked
 
 API methods have been secured with simple HTTP AUTH (wich requires SSL transport).
 
-Spring security checks that the Autherization header is present and does the login agains an in-memory dummy user (user/password -- no database lookup implemented so far).
+Spring security checks that the Authorization header is present and does the login against an in-memory dummy user (user/password -- no database lookup implemented so far).
 
 In the service classes, the user ID is retrieved using Spring's `SecurityContextHolder` class.
 
