@@ -13,12 +13,10 @@ public class TransactionRequestDTO {
 	private TransactionType type;
 
 	@JsonCreator
-	public TransactionRequestDTO(@JsonProperty("amount") BigDecimal amount) {
+	public TransactionRequestDTO(@JsonProperty(value = "amount", required = true) BigDecimal amount,
+			@JsonProperty(value = "type", required = true) TransactionType type) {
 		super();
 		this.amount = amount;
-	}
-
-	public void setType(TransactionType type) {
 		this.type = type;
 	}
 

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.prestamosprima.codingtask.domain.TransactionType;
 import com.prestamosprima.codingtask.service.AccountDTO;
 import com.prestamosprima.codingtask.service.AccountNotFoundException;
 import com.prestamosprima.codingtask.service.AccountService;
@@ -34,18 +33,9 @@ public class AccountController {
 		return accountService.findAccountById(id);
 	}
 
-	@RequestMapping(value = "{id}/deposit", method = RequestMethod.POST)
+	@RequestMapping(value = "{id}/transaction", method = RequestMethod.POST)
 	public ResponseEntity<?> deposit(@PathVariable("id") Long accountId, @RequestBody TransactionRequestDTO requestDTO)
 			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
-		requestDTO.setType(TransactionType.DEPOSIT);
-		Long trxId = accountService.createTransaction(accountId, requestDTO);
-		return toLocation(trxId);
-	}
-
-	@RequestMapping(value = "{id}/withdrawal", method = RequestMethod.POST)
-	public ResponseEntity<?> withdraw(@PathVariable("id") Long accountId, @RequestBody TransactionRequestDTO requestDTO)
-			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
-		requestDTO.setType(TransactionType.WITHDRAWAL);
 		Long trxId = accountService.createTransaction(accountId, requestDTO);
 		return toLocation(trxId);
 	}

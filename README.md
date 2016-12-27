@@ -16,16 +16,25 @@ HTTP/1.1 201
 Location: http://localhost:8080/account/2
 Content-Length: 0
 ```
-## Deposit / withdraw
+## Account transactions (deposit / withdraw)
 
 **Request (deposit)**
 ```bash
-curl -w "\n" -v -H "content-type: application/json" -d "{\"amount\":40.0}" -XPOST "http://localhost:8080/account/1/deposit"
+curl -w "\n" -v -H "content-type: application/json" \
+-d "{\"amount\":40.0, \"type\":\"DEPOSIT\"}" \
+-XPOST "http://localhost:8080/account/1/transaction"
+```
+
+**Request (withdrawal)**
+```bash
+curl -w "\n" -v -H "content-type: application/json" \
+-d "{\"amount\":40.0, \"type\":\"WITHDRAWAL\"}" \
+-XPOST "http://localhost:8080/account/1/transaction"
 ```
 **Response**
 ```bash
 HTTP/1.1 201
-Location: http://localhost:8080/account/1/deposit/4
+Location: http://localhost:8080/account/1/transaction/4
 Content-Length: 0
 ```
 
@@ -64,9 +73,9 @@ Collection stream , the `map` operation and a lambda expression are used to conv
 		List<TransactionResponseDTO> statement = accountTransactionDAO.findTop10ByAccountOrderByCreateDateDesc(account)
 				.map(i -> new TransactionResponseDTO(i)).collect(Collectors.toList());
  ```
- 
+
  Other Java 8 features that could be considered: `Optional` and the new Time API.
- 
+
 ## XML config
 
 I prefer Spring XML config over Java config as the former is far more compact.
@@ -78,5 +87,3 @@ I prefer Spring XML config over Java config as the former is far more compact.
 * Creation timestamp and update timestamp audit columns in all entities.
 * Spring Data JPA repositories.
 * Entity and repository base classes.
-
-
