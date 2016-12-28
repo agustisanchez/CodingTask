@@ -52,7 +52,11 @@ HTTP/1.1 200
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
 
-{"statement":[{"type":"DEPOSIT","amount":40.00,"createDate":1482529457005},{"type":"WITHDRAWAL","amount":40.00,"createDate":1482513247789},{"type":"DEPOSIT","amount":40.00,"createDate":1482513232229},{"type":"DEPOSIT","amount":15.00,"createDate":1482498830576}],"balance":55.00}
+{"statement":[{"type":"DEPOSIT","amount":40.00,"createDate":1482529457005},
+{"type":"WITHDRAWAL","amount":40.00,"createDate":1482513247789},
+{"type":"DEPOSIT","amount":40.00,"createDate":1482513232229},
+{"type":"DEPOSIT","amount":15.00,"createDate":1482498830576}],
+"balance":55.00}
 ```
 ## Exception handling
 
