@@ -17,7 +17,7 @@ public abstract class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
+	private Long id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_date", nullable = false)

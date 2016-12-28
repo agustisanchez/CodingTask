@@ -53,8 +53,8 @@ public class AccountTransaction extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Placement [id=" + id + ", getCreateDate()=" + getCreateDate() + ", getUpdateDate()=" + getUpdateDate()
-				+ ", amount=" + amount + "]";
+		return "Placement [id=" + getId() + ", getCreateDate()=" + getCreateDate() + ", getUpdateDate()="
+				+ getUpdateDate() + ", amount=" + amount + "]";
 	}
 
 }
