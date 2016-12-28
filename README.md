@@ -76,6 +76,19 @@ Spring security checks that the Authorization header is present and does the log
 
 In the service classes, the user ID is retrieved using Spring's `SecurityContextHolder` class.
 
+## Tests
+
+A couple of tests have been implemented in class `AccountControllerTest`.
+They use mocking on the HTTP and DAO layers (MockMvc and mocked DAOs).
+
+They are automatically invoked by Maven with `mvn package` or explicitly with `mvn test`.
+
+For real end-to-end tests:
+* configure  H2 in-memory capability with schema autocreation (couldn't figure out how to do it in in-memory mode)
+* configure an embedded Tomcat instance with custom port in Maven and make it start on the integration test phase.
+
+Finally, a test coverage tool (Cobertura or JaCoCo) should be configured in Maven.
+
 ## Java 8 features
 
 Collection stream , the `map` operation and a lambda expression are used to convert a list of `AccountTransaction` objects into a list of `TransactionDTO` objects:
