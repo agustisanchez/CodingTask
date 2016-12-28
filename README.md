@@ -82,14 +82,15 @@ In the service classes, the user ID is retrieved using Spring's `SecurityContext
 
 ## Tests
 
-A couple of tests have been implemented in class `AccountControllerTest`.
+A couple of unit tests have been implemented in class `AccountControllerTest`.
 They use mocking on the HTTP and DAO layers (MockMvc and mocked DAOs).
 
-They are automatically invoked by Maven with `mvn package` or explicitly with `mvn test`.
+An "integration" test using in-memory H2 database has been implemented in class `AccountControllerITest`.
+To be a real integration test, an embedded Tomcat instance should be utilized instead of MockMvc. That can be achieved by defining it as a plug-in in Maven and linking it to the `integration-tests` phase.
 
-For real end-to-end tests:
-* configure  H2 in-memory capability with schema autocreation (couldn't figure out how to do it in in-memory mode)
-* configure an embedded Tomcat instance with custom port in Maven and make it start on the integration test phase.
+
+
+They are automatically invoked by Maven with `mvn package` or explicitly with `mvn test` (strictly, the integration test should run during the `integration-tests` phase).
 
 Finally, a test coverage tool (Cobertura or JaCoCo) should be configured in Maven.
 
