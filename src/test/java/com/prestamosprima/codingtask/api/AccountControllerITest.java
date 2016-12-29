@@ -1,6 +1,7 @@
 package com.prestamosprima.codingtask.api;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,14 +40,55 @@ public class AccountControllerITest {
 				.perform(post("/account").with(httpBasic("user", "password")).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated()).andReturn().getResponse().getHeader("location");
 
+		String locationId = checkLocationAndExtractId(location);
+
+		Assert.assertNotNull("Account not found", dao.findOne(new Long(locationId)));
+
+	}
+
+	@Test
+	public void accountNotFoundIfBelongsToAnotherUser_attemptGet() throws Exception {
+
+		// Create account with some user
+		String location = this.mvc
+				.perform(post("/account").with(httpBasic("user", "password")).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated()).andReturn().getResponse().getHeader("location");
+
+		String locationId = checkLocationAndExtractId(location);
+		Assert.assertNotNull("Account was not created", dao.findOne(new Long(locationId)));
+
+		// Try to retrieve account with another user
+
+		this.mvc.perform(
+				get("/account/" + locationId).with(httpBasic("user2", "password2")).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void accountNotFoundIfBelongsToAnotherUser_attemptDeposit() throws Exception {
+
+		// Create account with some user
+		String location = this.mvc
+				.perform(post("/account").with(httpBasic("user", "password")).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated()).andReturn().getResponse().getHeader("location");
+
+		String locationId = checkLocationAndExtractId(location);
+		Assert.assertNotNull("Account was not created", dao.findOne(new Long(locationId)));
+
+		// Try to perform transaction with another user
+
+		this.mvc.perform(post("/account/" + locationId + "/transaction").contentType(MediaType.APPLICATION_JSON)
+				.content("{\"amount\":25.0, \"type\":\"DEPOSIT\"}").with(httpBasic("user2", "password2"))
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	private String checkLocationAndExtractId(String location) {
 		Assert.assertTrue("Empty location header", StringUtils.isNotBlank(location));
 		int idIdx = location.lastIndexOf('/');
 		Assert.assertTrue("Malformed location URL", idIdx != -1);
 
 		String locationId = location.substring(idIdx + 1);
-
-		Assert.assertNotNull("Account not found", dao.findOne(new Long(locationId)));
-
+		return locationId;
 	}
 
 }

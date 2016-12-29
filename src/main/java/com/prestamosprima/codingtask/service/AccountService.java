@@ -14,12 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.prestamosprima.codingtask.domain.Account;
 import com.prestamosprima.codingtask.domain.AccountTransaction;
+import com.prestamosprima.codingtask.domain.Customer;
 import com.prestamosprima.codingtask.domain.TransactionType;
 
 @Service
 public class AccountService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Autowired
+	private CustomerDAO customerDAO;
 
 	@Autowired
 	private AccountDAO accountDAO;
@@ -30,15 +34,11 @@ public class AccountService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public AccountDTO findAccountById(Long id) throws AccountNotFoundException {
 
-		String userName = userName();
-		logger.info("User '{}'", userName);
-		// TODO check account belongs to user
+		Customer customer = fetchCustomer();
 
-		Account account = accountDAO.findOne(id);
+		// Account must exist and must belong to customer
 
-		if (account == null) {
-			throw new AccountNotFoundException();
-		}
+		Account account = fetchCustomerAccount(id, customer);
 
 		List<TransactionResponseDTO> statement = accountTransactionDAO.findTop10ByAccountOrderByCreateDateDesc(account)
 				.map(i -> new TransactionResponseDTO(i)).collect(Collectors.toList());
@@ -49,11 +49,9 @@ public class AccountService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Long createAccount() {
 
-		String userName = userName();
-		logger.info("User '{}'", userName);
-		// TODO check account belongs to user
+		Customer customer = fetchCustomer();
 
-		Account account = accountDAO.save(new Account());
+		Account account = accountDAO.save(new Account(customer));
 		return account.getId();
 	}
 
@@ -61,9 +59,7 @@ public class AccountService {
 	public Long createTransaction(Long accountId, TransactionRequestDTO requestDTO)
 			throws AmountMustBePositiveException, AccountNotFoundException, NotEnoughFundsException {
 
-		String userName = userName();
-		logger.info("User '{}'", userName);
-		// TODO check account belongs to user
+		Customer customer = fetchCustomer();
 
 		BigDecimal amount = requestDTO.getAmount();
 		TransactionType type = requestDTO.getType();
@@ -72,10 +68,9 @@ public class AccountService {
 			throw new AmountMustBePositiveException();
 		}
 
-		Account account = accountDAO.findOne(accountId);
-		if (account == null) {
-			throw new AccountNotFoundException();
-		}
+		// Account must exist and must belong to customer
+
+		Account account = fetchCustomerAccount(accountId, customer);
 
 		switch (type) {
 		case DEPOSIT:
@@ -95,6 +90,26 @@ public class AccountService {
 		AccountTransaction newPlacement = accountTransactionDAO.save(new AccountTransaction(account, type, amount));
 		accountDAO.save(account);
 		return newPlacement.getId();
+	}
+
+	private Account fetchCustomerAccount(Long accountId, Customer customer) throws AccountNotFoundException {
+		Account account = accountDAO.findOneByCustomerAndId(customer, accountId);
+		if (account == null) {
+			throw new AccountNotFoundException();
+		}
+		return account;
+	}
+
+	private Customer fetchCustomer() {
+		String userName = userName();
+		logger.debug("Customer '{}'", userName);
+
+		Customer customer = customerDAO.findByName(userName);
+
+		if (customer == null) {
+			throw new RuntimeException("Could not find user '" + userName + "' in database.");
+		}
+		return customer;
 	}
 
 	private String userName() {
