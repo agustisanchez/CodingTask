@@ -41,8 +41,6 @@ public class AccountControllerTest {
 		when(mockAccount.getId()).thenReturn(23L); // TODO randomize
 		when(dao.save(any(Account.class))).thenReturn(mockAccount);
 
-		dao.save(new Account());
-
 		this.mvc.perform(post("/account").with(httpBasic("user", "password")).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated()).andExpect(header().string("location", "http://localhost/account/23"));
 	}
@@ -51,9 +49,7 @@ public class AccountControllerTest {
 	public void accountNotFound() throws Exception {
 
 		// Return null, account does not exist.
-		when(dao.findOne(any(Long.class))).thenReturn(null);
-
-		dao.save(new Account());
+		// when(dao.find... mock return null by default
 
 		String accId = "123"; // TODO randomize
 		this.mvc.perform(
