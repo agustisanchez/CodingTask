@@ -10,23 +10,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.prestamosprima.codingtask.app.WebSecurityConfig;
 import com.prestamosprima.codingtask.domain.Account;
 import com.prestamosprima.codingtask.service.AccountDAO;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(AccountController.class)
-@ContextConfiguration(locations = "classpath:test-applicationContext.xml", classes = WebSecurityConfig.class)
-public class AccountControllerTest {
+public class AccountControllerTest extends AbstractControllerTest {
 
 	@MockBean
 	private AccountDAO dao;

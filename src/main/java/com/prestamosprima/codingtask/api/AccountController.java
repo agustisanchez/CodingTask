@@ -31,7 +31,6 @@ public class AccountController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public AccountDTO getAccount(@PathVariable("id") Long id, Principal principal) throws AccountNotFoundException {
-		System.out.println(principal);
 		return accountService.findAccountById(id);
 	}
 

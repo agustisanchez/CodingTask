@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prestamosprima.codingtask.service.AccountNotFoundException;
 import com.prestamosprima.codingtask.service.AmountMustBePositiveException;
 import com.prestamosprima.codingtask.service.BusinessException;
+import com.prestamosprima.codingtask.service.DuplicateCustomerEmailException;
+import com.prestamosprima.codingtask.service.DuplicateCustomerUsernameException;
 import com.prestamosprima.codingtask.service.ExceptionDTO;
 import com.prestamosprima.codingtask.service.NotEnoughFundsException;
+import com.prestamosprima.codingtask.service.PasswordsDoNotMatchException;
 
 @RestController
 @ControllerAdvice
@@ -26,6 +29,12 @@ public class GlobalExceptionHandler {
 	private static Map<Class<? extends Exception>, ExceptionMapping> excMap = new HashMap<>();
 
 	static {
+		excMap.put(PasswordsDoNotMatchException.class,
+				new ExceptionMapping("passwords.do.not.match", HttpStatus.BAD_REQUEST));
+		excMap.put(DuplicateCustomerEmailException.class,
+				new ExceptionMapping("duplicate.customer.email", HttpStatus.BAD_REQUEST));
+		excMap.put(DuplicateCustomerUsernameException.class,
+				new ExceptionMapping("duplicate.customer.username", HttpStatus.BAD_REQUEST));
 		excMap.put(NotEnoughFundsException.class, new ExceptionMapping("not.enough.funds", HttpStatus.BAD_REQUEST));
 		excMap.put(AmountMustBePositiveException.class,
 				new ExceptionMapping("amount.must.be.positive", HttpStatus.BAD_REQUEST));

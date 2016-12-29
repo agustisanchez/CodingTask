@@ -2,9 +2,11 @@ package com.prestamosprima.codingtask.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customer", uniqueConstraints = { @UniqueConstraint(columnNames = "name"),
+		@UniqueConstraint(columnNames = "email") })
 public class Customer extends BaseEntity {
 
 	private String name;
@@ -16,9 +18,10 @@ public class Customer extends BaseEntity {
 	public Customer() {
 	}
 
-	public Customer(String name, String password) {
+	public Customer(String name, String email, String password) {
 		super();
 		this.name = name;
+		this.email = email;
 		this.password = password;
 	}
 

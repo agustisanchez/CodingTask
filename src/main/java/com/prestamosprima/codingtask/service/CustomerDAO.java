@@ -6,4 +6,5 @@ public interface CustomerDAO extends BaseDAO<Customer> {
 
 	Customer findByName(String name);
 
+	Customer findByEmail(String email);
 }

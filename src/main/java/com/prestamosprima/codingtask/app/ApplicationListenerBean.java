@@ -39,11 +39,11 @@ public class ApplicationListenerBean implements ApplicationListener {
 	@Transactional
 	public void mayCreateDemoUser() {
 		if (customerDAO.findByName("user") == null) {
-			Customer customer1 = customerDAO.save(new Customer("user", "password"));
+			Customer customer1 = customerDAO.save(new Customer("user", "user@nowhere.net", "password"));
 			logger.warn("Created demo user with id '{}'.", customer1.getId());
 		}
 		if (customerDAO.findByName("user2") == null) {
-			Customer customer2 = customerDAO.save(new Customer("user2", "password2"));
+			Customer customer2 = customerDAO.save(new Customer("user2", "user2@nowhere.net", "password2"));
 			logger.warn("Created demo user with id '{}'.", customer2.getId());
 		}
 

@@ -3,6 +3,20 @@
 
 ## Use cases implemened
 
+## Create customer (user registration)
+
+**Request**
+
+```bash
+curl -v -XPOST "http://localhost:8080/customer"
+```
+**Response**
+```bash
+HTTP/1.1 201
+Location: http://localhost:8080/customer/[username]
+Content-Length: 0
+```
+
 ### Create account (bank account, not customer account)
 
 **Request**
@@ -76,16 +90,23 @@ Transfer-Encoding: chunked
 
 API methods have been secured with simple HTTP AUTH (wich requires SSL transport).
 
-Spring security checks that the Authorization header is present and does the login against an in-memory dummy user (user/password -- no database lookup implemented so far).
+Spring security checks that the Authorization header is present and does the login against the customer table in database.
 
 In the service classes, the user ID is retrieved using Spring's `SecurityContextHolder` class.
 
+**TODO**
+
+*  Encrypt passwords in database (i.e. with SHA)
+*  clear passwords in objects if not needed
+
 ## Tests
+
+The project includes 7 tests.
 
 A couple of unit tests have been implemented in class `AccountControllerTest`.
 They use mocking on the HTTP and DAO layers (MockMvc and mocked DAOs).
 
-An "integration" test using in-memory H2 database has been implemented in class `AccountControllerITest`.
+Five "integration" tests using in-memory H2 database have been implemented in classes `AccountControllerITest` and `CustomerControllerITest`.
 To be a real integration test, an embedded Tomcat instance should be utilized instead of MockMvc. That can be achieved by defining it as a plug-in in Maven and linking it to the `integration-tests` phase.
 
 

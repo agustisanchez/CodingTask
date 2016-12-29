@@ -7,24 +7,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.prestamosprima.codingtask.app.WebSecurityConfig;
 import com.prestamosprima.codingtask.service.AccountDAO;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(AccountController.class)
-@ContextConfiguration(locations = "classpath:test-applicationContext.xml", classes = WebSecurityConfig.class)
-public class AccountControllerITest {
+public class AccountControllerITest extends AbstractControllerTest {
 
 	@Autowired
 	private AccountDAO dao;
@@ -80,15 +73,6 @@ public class AccountControllerITest {
 		this.mvc.perform(post("/account/" + locationId + "/transaction").contentType(MediaType.APPLICATION_JSON)
 				.content("{\"amount\":25.0, \"type\":\"DEPOSIT\"}").with(httpBasic("user2", "password2"))
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
-	}
-
-	private String checkLocationAndExtractId(String location) {
-		Assert.assertTrue("Empty location header", StringUtils.isNotBlank(location));
-		int idIdx = location.lastIndexOf('/');
-		Assert.assertTrue("Malformed location URL", idIdx != -1);
-
-		String locationId = location.substring(idIdx + 1);
-		return locationId;
 	}
 
 }
