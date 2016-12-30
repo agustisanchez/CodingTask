@@ -13,7 +13,7 @@ public class CustomerService {
 	@Autowired
 	private CustomerDAO customerDAO;
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public Customer registerCustomer(CustomerRegistrationDTO dto)
 			throws PasswordsDoNotMatchException, DuplicateCustomerUsernameException, DuplicateCustomerEmailException {
 

@@ -31,7 +31,7 @@ public class AccountService {
 	@Autowired
 	private AccountTransactionDAO accountTransactionDAO;
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public AccountDTO findAccountById(Long id) throws AccountNotFoundException {
 
 		Customer customer = fetchCustomer();
@@ -46,7 +46,7 @@ public class AccountService {
 		return new AccountDTO(account, statement);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public Long createAccount() {
 
 		Customer customer = fetchCustomer();
