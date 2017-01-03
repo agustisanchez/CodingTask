@@ -96,8 +96,9 @@ In the service classes, the user ID is retrieved using Spring's `SecurityContext
 
 **TODO**
 
-*  Encrypt passwords in database (i.e. with SHA)
+*  Encrypt passwords in database (i.e. with SHA-2/SHA-3)
 *  clear passwords in objects if not needed
+* Authentication should be token-based; HTTP Basic Auth is not suited for a RESTful API scenario.
 
 ## Tests
 
