@@ -1,0 +1,5 @@
+* OpenAM / LDAP (token based) instead of Basic Auth
+* password Encryption
+* Database should be same vendor as production
+* Embedded Tomcat
+* Full end-to-end (embedded Tomcat, real database) blackbox test + test coverage tools
