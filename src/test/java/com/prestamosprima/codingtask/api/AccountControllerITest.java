@@ -15,12 +15,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.prestamosprima.codingtask.service.AccountDAO;
+import com.prestamosprima.codingtask.service.AccountDAO2;
 
 @WebMvcTest(AccountController.class)
 public class AccountControllerITest extends AbstractControllerTest {
 
 	@Autowired
 	private AccountDAO dao;
+
+	@Autowired
+	private AccountDAO2 dao2;
 
 	@Autowired
 	private MockMvc mvc;
@@ -35,7 +39,7 @@ public class AccountControllerITest extends AbstractControllerTest {
 
 		String locationId = checkLocationAndExtractId(location);
 
-		Assert.assertNotNull("Account not found", dao.findOne(new Long(locationId)));
+		Assert.assertNotNull("Account not found", dao2.findOne(new Long(locationId)));
 
 	}
 
